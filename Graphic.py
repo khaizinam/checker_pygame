@@ -11,11 +11,13 @@ class Graphics:
 		self.fps = 60
 		self.clock = pygame.time.Clock()
 
-		self.window_size = 600
-		self.screen = pygame.display.set_mode((980, self.window_size))
-		self.background = pygame.image.load('resources/board.png')
+		self.window_size = 650
+		self.window_width = 980
+		self.window_height = 650
+		self.screen = pygame.display.set_mode(( self.window_width, self.window_height))
+		self.background = pygame.image.load('resources/map.png')
 
-		self.square_size = 600 // 8
+		self.square_size = self.window_size // 8
 		self.piece_size = self.square_size // 2
 
 		self.message = False
@@ -31,7 +33,7 @@ class Graphics:
 		"""
 		This updates the current display.
 		"""
-		self.screen.blit(self.background, (0,0))
+		self.screen.blit(self.background, (0,0),(0,0,980,650))
 
 		self.highlight_squares(legal_moves, selected_piece)
 		self.draw_board_pieces(board)
@@ -48,7 +50,7 @@ class Graphics:
 		"""
 		for x in range(8):
 			for y in range(8):
-				pygame.draw.rect(self.screen, board[x][y].color, (x * self.square_size, y * self.square_size, self.square_size, self.square_size), )
+				pygame.draw.rect(self.screen, board[x][y].color, (x * self.square_size , y * self.square_size, self.square_size, self.square_size), )
 
 	def draw_board_pieces(self, board):
 		"""
@@ -75,7 +77,6 @@ class Graphics:
 		"""
 		Does the reverse of pixel_coords(). Takes in a tuple of of pixel coordinates and returns what square they are in.
 		"""
-		if (pixel_x >= 550): pixel_x=550
 		return (pixel_x // self.square_size, pixel_y // self.square_size)
 
 	def highlight_squares(self, squares, origin):

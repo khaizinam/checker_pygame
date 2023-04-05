@@ -25,7 +25,7 @@ SOUTHEAST = "southeast"
 
 
 class Bot:
-    def __init__(self, game, color, method='random', mid_eval=None, end_eval=None, depth=1):
+    def __init__(self, game, color, method='minmax', mid_eval=None, end_eval=None, depth=1):
         self.method = method
         if mid_eval == 'piece2val':
             self._mid_eval = self._piece2val
@@ -52,22 +52,27 @@ class Bot:
         self._current_eval = self._mid_eval
         self._end_eval_time = False
         self._count_nodes = 0
+        self.time_next_move = 0
 
     def step(self, board, return_count_nodes=False):
-        self._count_nodes = 0
-        if(self._end_eval is not None and self._end_eval_time == False):
-            if self._all_kings(board):
-                print('END EVAL is on')
-                self._end_eval_time = True
-                self._current_eval = self._end_eval
-        if self.method == 'random':
-            self._random_step(board)
-        elif self.method == 'minmax':
-            self._minmax_step(board)
-        elif self.method == 'alpha_beta':
-            self._alpha_beta_step(board)
-        if return_count_nodes:
-            return self._count_nodes
+        if self.time_next_move == 0:
+            self._count_nodes = 0
+            if(self._end_eval is not None and self._end_eval_time == False):
+                if self._all_kings(board):
+                    print('END EVAL is on')
+                    self._end_eval_time = True
+                    self._current_eval = self._end_eval
+            if self.method == 'random':
+                self._random_step(board)
+            elif self.method == 'minmax':
+                self._minmax_step(board)
+            elif self.method == 'alpha_beta':
+                self._alpha_beta_step(board)
+            if return_count_nodes:
+                return self._count_nodes
+            self.time_next_move = 60
+        else :
+            self.time_next_move -= 1
 
     def _action(self, current_pos, final_pos, board):
         if current_pos is None:
