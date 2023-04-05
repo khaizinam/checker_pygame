@@ -1,0 +1,24 @@
+Menu intro:
+- P v P
+- P v E
+
+PvP menu :
+create Room -> name host
+-> show list hots -> join
+
+host là người đánh đầu tiên
+
+
+Màn hình game:
+time player 1,2 : 13:00 phút
+update:
+    - vị trí cũ cả quân cờ vừa đánh
+    - tự xin thua khi không còn nước đi nào phù hợp
+    - bàn cờ mới
+    - End screen
+menu : 
+    pause (xin tạm dừng hai bên)
+    resume
+    Xin thua/ Xin Hoà
+    Main menu(out khỏi phòng về main menu)
+    Exit game
