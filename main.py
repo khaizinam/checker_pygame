@@ -18,7 +18,7 @@ class Game:
         self.hop = False
         self.endit = False
         
-        self.player = Player(True, self)
+        self.player = Player(loop_mode=True, game=self)
         
         self.bot = Bot(self, RED, mid_eval='piece_and_board',end_eval='sum_of_dist', method=self.bot_mod[0], depth=3)
         
@@ -37,6 +37,18 @@ class Game:
     def update(self):
         self.events()
         self.player.update()
+        if self.player.check_for_endgame():
+            if self.turn == BLUE:
+                print('RED WINS!')
+                self.graphic.draw_message("RED WINS!")
+            else:
+                print('BLUE WINS!')
+                self.graphic.draw_message("BLUE WINS!")
+                print(self.turn)
+            if(self.player.loop_mode):
+                self.endit = True
+            else:
+                self.terminate_game()
         self.graphic.update_display(self.board, self.player.selected_legal_moves, self.player.selected_piece)
         
     

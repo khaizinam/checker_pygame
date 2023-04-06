@@ -124,18 +124,18 @@ class Player:
 		self.selected_legal_moves = []
 		self.game.hop = False
 
-		if self.check_for_endgame():
-			if self.game.turn == BLUE:
-				print('RED WINS!')
-				self.game.graphic.draw_message("RED WINS!")
-			else:
-				print('BLUE WINS!')
-				self.game.graphic.draw_message("BLUE WINS!")
-			print(self.game.turn)
-			if(self.loop_mode):
-				self.game.endit = True
-			else:
-				self.terminate_game()
+		# if self.check_for_endgame():
+		# 	if self.game.turn == BLUE:
+		# 		print('RED WINS!')
+		# 		self.game.graphic.draw_message("RED WINS!")
+		# 	else:
+		# 		print('BLUE WINS!')
+		# 		self.game.graphic.draw_message("BLUE WINS!")
+		# 	print(self.game.turn)
+		# 	if(self.loop_mode):
+		# 		self.game.endit = True
+		# 	else:
+		# 		self.terminate_game()
 
 	def check_for_endgame(self):
 		"""
