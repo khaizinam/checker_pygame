@@ -9,11 +9,12 @@ from time import sleep
 
 class Game:
     def __init__(self):
+        self.runing = True
+    def setup(self):
         self.graphic = Graphics()
         self.board = Board()
         self.runing = True
         self.bot_mod = ['alpha_beta']
-    def setup(self):
         self.turn = BLUE
         self.hop = False
         self.endit = False
@@ -37,24 +38,26 @@ class Game:
     def update(self):
         self.events()
         self.player.update()
-        if self.player.check_for_endgame():
-            if self.turn == BLUE:
-                print('RED WINS!')
-                self.graphic.draw_message("RED WINS!")
-            else:
-                print('BLUE WINS!')
-                self.graphic.draw_message("BLUE WINS!")
-                print(self.turn)
-            if(self.player.loop_mode):
-                self.endit = True
-            else:
-                self.terminate_game()
         self.graphic.update_display(self.board, self.player.selected_legal_moves, self.player.selected_piece)
         
     
     def draw(self):
         pass
-    
+    def reset(self):
+        restart_button = Button(x = WIN_WIDTH//2 - 100, y= WIN_HEIGHT//2 + 50, width= 200, height = 100, fg=BLACK ,bg=WHITE, content='Re Play', fontsize=25)
+        runing = True
+        while runing:
+            self.events()
+                
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_pressed = pygame.mouse.get_pressed()
+
+            if restart_button.is_pressed(mouse_pos, mouse_pressed):
+                self.graphic.message = False
+                runing = False
+            self.graphic.screen.blit(restart_button.image, restart_button.rect)
+            pygame.display.update()
+            
     def main(self):
         while self.runing:
             self.setup()
@@ -68,6 +71,7 @@ class Game:
                 self.update()
                 if self.endit:
                     break
+            self.reset()
 
 game = Game()
 game.main()    
