@@ -12,8 +12,8 @@ class Graphics:
 		self.clock = pygame.time.Clock()
 
 		self.window_size = 650
-		self.window_width = 980
-		self.window_height = 650
+		self.window_width = WIN_WIDTH
+		self.window_height = WIN_HEIGHT
 		self.screen = pygame.display.set_mode(( self.window_width, self.window_height))
 		self.background = pygame.image.load('resources/map.png')
 
