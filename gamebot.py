@@ -76,7 +76,7 @@ class Bot:
 
     def _action(self, current_pos, final_pos, board):
         if current_pos is None:
-            self.game.end_turn()
+            self.game.player.end_turn()
             # board.repr_matrix()
             # print(self._generate_all_possible_moves(board))
         # print(current_pos, final_pos, board.location(current_pos[0], current_pos[1]).occupant)
@@ -100,7 +100,7 @@ class Bot:
                     if final_pos != []:
                         # print("HOP in Action", current_pos, final_pos)
                         self._action(current_pos, final_pos[0], board)
-                    self.game.end_turn()
+                    self.game.player.end_turn()
 
         if self.game.hop == True:
             if current_pos != None and final_pos in board.legal_moves(current_pos[0], current_pos[1], self.game.hop):
@@ -110,7 +110,7 @@ class Bot:
                                    2, current_pos[1] + (final_pos[1] - current_pos[1]) // 2)
 
             if board.legal_moves(final_pos[0], final_pos[1], self.game.hop) == []:
-                self.game.end_turn()
+                self.game.player.end_turn()
             else:
                 current_pos = final_pos
                 final_pos = board.legal_moves(
@@ -118,7 +118,7 @@ class Bot:
                 if final_pos != []:
                     # print("HOP in Action", current_pos, final_pos)
                     self._action(current_pos, final_pos[0], board)
-                self.game.end_turn()
+                self.game.player.end_turn()
         if self.game.hop != True:
             self.game.turn = self.adversary_color
 
@@ -175,7 +175,7 @@ class Bot:
     def _random_step(self, board):
         possible_moves = self._generate_all_possible_moves(board)
         if possible_moves == []:
-            self.game.end_turn()
+            self.game.player.end_turn()
             return
         random_move = random.choice(possible_moves)
         rand_choice = random.choice(random_move[2])

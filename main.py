@@ -1,66 +1,61 @@
-import Game
+from Player import *
 from gamebot import *
 from Button import *
 from config import *
+from Graphic import *
+from Board import *
 import pygame
 from time import sleep
-##COLORS##
-#             R    G    B
-WHITE = (255, 255, 255)
-BLUE = (0,   0, 255)
-RED = (255,   0,   0)
-BLACK = (0,   0,   0)
-GOLD = (255, 215,   0)
-HIGH = (160, 190, 255)
 
-##DIRECTIONS##
-NORTHWEST = "northwest"
-NORTHEAST = "northeast"
-SOUTHWEST = "southwest"
-SOUTHEAST = "southeast"
+class Game:
+    def __init__(self):
+        self.graphic = Graphics()
+        self.board = Board()
+        self.runing = True
+        self.bot_mod = ['alpha_beta']
+    def setup(self):
+        self.turn = BLUE
+        self.hop = False
+        self.endit = False
+        
+        self.player = Player(True, self)
+        
+        self.bot = Bot(self, RED, mid_eval='piece_and_board',end_eval='sum_of_dist', method=self.bot_mod[0], depth=3)
+        
+        self.graphic.setup_window()
+    
+    def terminate_game(self):
+        self.runing = False
+        pygame.quit()
+        sys.exit()
+        
+    def events(self):
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                self.terminate_game() 
+                
+    def update(self):
+        self.events()
+        self.player.update()
+        self.graphic.update_display(self.board, self.player.selected_legal_moves, self.player.selected_piece)
+        
+    
+    def draw(self):
+        pass
+    
+    def main(self):
+        while self.runing:
+            self.setup()
+            self.events()
+            while True:  # main game loop
+                if self.turn == BLUE:
+                    self.player.player_turn()
+                else:
+                    count_nodes = self.bot.step(self.board, True)
+                    print('Total nodes explored in this step are', count_nodes)
+                self.update()
+                if self.endit:
+                    break
 
-
-def main():
-    while True:
-        game = Game.Game(loop_mode=True)
-        game.setup()
-        clock = pygame.time.Clock()
-        bot = Bot(game, RED, mid_eval='piece_and_board',
-                          end_eval='sum_of_dist', method='alpha_beta', depth=3)
-        #random_bot_blue = Bot(
-            #game, BLUE, mid_eval='piece_and_board_pov', method='alpha_beta', depth=3, end_eval='sum_of_dist')
-        reset_btn = True
-        while True:  # main game loop
-            if game.turn == BLUE:
-                 # TO start player's turn uncomment the below line and comment a couple  of line below than that
-                game.player_turn()
-                # count_nodes = random_bot_blue.step(game.board, True)
-                # print('Total nodes explored in this step are', count_nodes)
-            else:
-                # TO start player's turn uncomment the below line and comment a couple  of line below than that
-                # game.player_turn()
-                count_nodes = bot.step(game.board, True)
-                print('Total nodes explored in this step are', count_nodes)
-            game.update()
-            if game.endit:
-                break
-        button = Button(WIN_WIDTH //2 ,WIN_HEIGHT //2, 100, 100, BLACK , WHITE, 'restart', 15)
-        while reset_btn:
-            mouse_pos = pygame.mouse.get_pos()
-            mouse_pressed = pygame.mouse.get_pressed()
-            for event in pygame.event.get():
-                if event.type == QUIT:
-                    game.terminate_game()
-            
-            if button.is_pressed(mouse_pos, mouse_pressed):
-                reset_btn = False
-            game.graphics.screen.blit(button.image,button.rect)
-            game.graphics.clock.tick(60)
-            pygame.display.update()
-            
-
-
-
-if __name__ == "__main__":
-    main()
-    pass
+game = Game()
+game.main()    

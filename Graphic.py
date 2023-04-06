@@ -8,16 +8,15 @@ class Graphics:
 	def __init__(self):
 		self.caption = "Game Checkers ! :)))"
 
-		self.fps = 60
+		self.fps = FPS
 		self.clock = pygame.time.Clock()
 
-		self.window_size = 650
 		self.window_width = WIN_WIDTH
 		self.window_height = WIN_HEIGHT
 		self.screen = pygame.display.set_mode(( self.window_width, self.window_height))
 		self.background = pygame.image.load('resources/map.png')
 
-		self.square_size = self.window_size // 8
+		self.square_size = 650 // 8
 		self.piece_size = self.square_size // 2
 
 		self.message = False
@@ -99,4 +98,4 @@ class Graphics:
 		self.font_obj = pygame.font.Font('freesansbold.ttf', 44)
 		self.text_surface_obj = self.font_obj.render(message, True, HIGH, BLACK)
 		self.text_rect_obj = self.text_surface_obj.get_rect()
-		self.text_rect_obj.center = (self.window_size // 2, self.window_size // 2)
+		self.text_rect_obj.center = (WIN_WIDTH // 2, WIN_HEIGHT // 2)
