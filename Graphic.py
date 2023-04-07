@@ -6,7 +6,7 @@ from time import sleep
 pygame.font.init()
 class Graphics:
 	def __init__(self):
-		self.caption = "Game Checkers ! :)))"
+		self.caption = "Cờ vây cùng Gia Cát :))"
 
 		self.fps = FPS
 		self.clock = pygame.time.Clock()

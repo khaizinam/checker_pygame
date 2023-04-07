@@ -17,6 +17,7 @@ class Game:
         self.graphic.setup_window()
         self.mode = ''
         pygame.init()
+        self.background = pygame.image.load('resources/bg_menu_2.png')
     def setup(self):
         self.graphic = Graphics()
         self.board = Board()
@@ -51,12 +52,13 @@ class Game:
         pass
     def reset(self):
         btn = [
-            Button(x = WIN_WIDTH//2 - 100, y= WIN_HEIGHT//2 - 200, width= 200, height = 50, fg=BLACK ,bg=WHITE, content='Re Play', fontsize=25),
-            Button(x = WIN_WIDTH//2 - 100, y= WIN_HEIGHT//2 - 100, width= 200, height = 50, fg=BLACK ,bg=WHITE, content='Main Menu', fontsize=25),
-            Button(x = WIN_WIDTH//2 - 100, y= WIN_HEIGHT//2 , width= 200, height = 50, fg=BLACK ,bg=WHITE, content='Exit', fontsize=25)
+            Button(x = WIN_WIDTH//2 - 100, y= WIN_HEIGHT//2 - 200, width= 200, height = 50, fg=WHITE,bg=BLACK , content='Ván nữa', fontsize=25),
+            Button(x = WIN_WIDTH//2 - 100, y= WIN_HEIGHT//2 - 100, width= 200, height = 50, fg=WHITE,bg=BLACK , content='Đổi người', fontsize=25),
+            Button(x = WIN_WIDTH//2 - 100, y= WIN_HEIGHT//2 , width= 200, height = 50, fg=WHITE,bg=BLACK , content='Cáo từ', fontsize=25)
         ]
         while True:
             self.graphic.screen.fill(BLACK)
+            self.graphic.screen.blit(self.background, (0,0),(0,0,980,650))
             self.events()
                 
             mouse_pos = pygame.mouse.get_pos()
@@ -94,23 +96,24 @@ class Game:
                 
     def main_menu(self):
         btn = [
-            Button(x = WIN_WIDTH//2 - 100, y= WIN_HEIGHT//2 - 200, width= 200, height = 50, fg=BLACK ,bg=WHITE, content='P v E', fontsize=25),
-            Button(x = WIN_WIDTH//2 - 100, y= WIN_HEIGHT//2 - 100, width= 200, height = 50, fg=BLACK ,bg=WHITE, content='P v P', fontsize=25),
-            Button(x = WIN_WIDTH//2 - 100, y= WIN_HEIGHT//2 , width= 200, height = 50, fg=BLACK ,bg=WHITE, content='Exit', fontsize=25)
+            Button(x = 50, y= WIN_HEIGHT//2 - 100, width= 300, height = 50, fg=WHITE,bg=BLACK , content='Tại hạ không có bằng hữu', fontsize=25),
+            Button(x = 50, y= WIN_HEIGHT//2, width= 300, height = 50, fg=WHITE,bg=BLACK , content='Solo với bằng hữu', fontsize=25),
+            Button(x = 50, y= WIN_HEIGHT//2 + 100, width= 300, height = 50, fg=WHITE,bg=BLACK , content='Cáo Từ', fontsize=25)
         ]
         btn2 = [
-            Button(x = WIN_WIDTH//2 - 100, y= WIN_HEIGHT//2 - 100, width= 200, height = 50, fg=BLACK ,bg=WHITE, content='Easy', fontsize=25),
-            Button(x = WIN_WIDTH//2 - 100, y= WIN_HEIGHT//2, width= 200, height = 50, fg=BLACK ,bg=WHITE, content='Hard', fontsize=25),
-            Button(x = WIN_WIDTH//2 - 100, y= WIN_HEIGHT//2 + 100, width= 200, height = 50, fg=BLACK ,bg=WHITE, content='Back', fontsize=25),
+            Button(x = 50, y= WIN_HEIGHT//2 - 100, width= 200, height = 50, fg=WHITE,bg=BLACK , content='Nhường ta chút', fontsize=25),
+            Button(x = 50, y= WIN_HEIGHT//2, width= 200, height = 50, fg=WHITE,bg=BLACK , content='Hết sức đi', fontsize=25),
+            Button(x = 50, y= WIN_HEIGHT//2 + 100, width= 200, height = 50, fg=WHITE,bg=BLACK , content='Quay về', fontsize=25),
         ]
         menu = True
         while True:
             self.graphic.screen.fill(BLACK)
+            self.graphic.screen.blit(self.background, (0,0),(0,0,980,650))
             self.events()
                 
-            mouse_pos = pygame.mouse.get_pos()
-            mouse_pressed = pygame.mouse.get_pressed()
             if menu:
+                mouse_pos = pygame.mouse.get_pos()
+                mouse_pressed = pygame.mouse.get_pressed()
                 if btn[0].is_pressed(mouse_pos, mouse_pressed):
                     # self.graphic.message = False
                     # self.mainMenu = False
@@ -127,6 +130,8 @@ class Game:
                 for button in btn:    
                     self.graphic.screen.blit(button.image, button.rect)
             else :
+                mouse_pos = pygame.mouse.get_pos()
+                mouse_pressed = pygame.mouse.get_pressed()
                 if btn2[0].is_pressed(mouse_pos, mouse_pressed):
                     self.graphic.message = False
                     self.mainMenu = False
