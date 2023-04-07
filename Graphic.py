@@ -31,6 +31,7 @@ class Graphics:
 		"""
 		This updates the current display.
 		"""
+		self.screen.fill(BLACK)
 		self.screen.blit(self.background, (0,0),(0,0,980,650))
 
 		self.highlight_squares(legal_moves, selected_piece)
