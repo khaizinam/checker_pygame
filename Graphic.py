@@ -25,7 +25,6 @@ class Graphics:
 		"""
 		This initializes the window and sets the caption at the top.
 		"""
-		pygame.init()
 		pygame.display.set_caption(self.caption)
 
 	def update_display(self, board, legal_moves, selected_piece):
