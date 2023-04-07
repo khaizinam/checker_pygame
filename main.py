@@ -56,6 +56,7 @@ class Game:
             Button(x = WIN_WIDTH//2 - 100, y= WIN_HEIGHT//2 , width= 200, height = 50, fg=BLACK ,bg=WHITE, content='Exit', fontsize=25)
         ]
         while True:
+            self.graphic.screen.fill(BLACK)
             self.events()
                 
             mouse_pos = pygame.mouse.get_pos()
@@ -97,27 +98,54 @@ class Game:
             Button(x = WIN_WIDTH//2 - 100, y= WIN_HEIGHT//2 - 100, width= 200, height = 50, fg=BLACK ,bg=WHITE, content='P v P', fontsize=25),
             Button(x = WIN_WIDTH//2 - 100, y= WIN_HEIGHT//2 , width= 200, height = 50, fg=BLACK ,bg=WHITE, content='Exit', fontsize=25)
         ]
-        
+        btn2 = [
+            Button(x = WIN_WIDTH//2 - 100, y= WIN_HEIGHT//2 - 100, width= 200, height = 50, fg=BLACK ,bg=WHITE, content='Easy', fontsize=25),
+            Button(x = WIN_WIDTH//2 - 100, y= WIN_HEIGHT//2, width= 200, height = 50, fg=BLACK ,bg=WHITE, content='Hard', fontsize=25),
+            Button(x = WIN_WIDTH//2 - 100, y= WIN_HEIGHT//2 + 100, width= 200, height = 50, fg=BLACK ,bg=WHITE, content='Back', fontsize=25),
+        ]
+        menu = True
         while True:
+            self.graphic.screen.fill(BLACK)
             self.events()
                 
             mouse_pos = pygame.mouse.get_pos()
             mouse_pressed = pygame.mouse.get_pressed()
-
-            if btn[0].is_pressed(mouse_pos, mouse_pressed):
-                self.graphic.message = False
-                self.mainMenu = False
-                self.mode = 'bot'
-                break
-            
-            elif btn[1].is_pressed(mouse_pos, mouse_pressed):
-                self.mode = 'pvp'
-            
-            elif btn[2].is_pressed(mouse_pos, mouse_pressed):
-                self.terminate_game()
+            if menu:
+                if btn[0].is_pressed(mouse_pos, mouse_pressed):
+                    # self.graphic.message = False
+                    # self.mainMenu = False
+                    # self.mode = 'bot'
+                    menu = False
+                    # break
                 
-            for button in btn:    
-                self.graphic.screen.blit(button.image, button.rect)
+                elif btn[1].is_pressed(mouse_pos, mouse_pressed):
+                    self.mode = 'pvp'
+                
+                elif btn[2].is_pressed(mouse_pos, mouse_pressed):
+                    self.terminate_game()
+                    
+                for button in btn:    
+                    self.graphic.screen.blit(button.image, button.rect)
+            else :
+                if btn2[0].is_pressed(mouse_pos, mouse_pressed):
+                    self.graphic.message = False
+                    self.mainMenu = False
+                    self.bot_mod =  self.bot_mod_default[0]
+                    self.mode = 'bot'
+                    break
+                
+                elif btn2[1].is_pressed(mouse_pos, mouse_pressed):
+                    self.graphic.message = False
+                    self.mainMenu = False
+                    self.bot_mod =  self.bot_mod_default[1]
+                    self.mode = 'bot'
+                    break
+                
+                elif btn2[2].is_pressed(mouse_pos, mouse_pressed):
+                    menu = True
+                    
+                for button in btn2:    
+                    self.graphic.screen.blit(button.image, button.rect)
             pygame.display.update()
             self.graphic.clock.tick(FPS)
                  
