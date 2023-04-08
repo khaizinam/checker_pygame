@@ -93,66 +93,88 @@ class Game:
                 self.update()
                 if self.endit:
                     self.playing = False 
-                
-    def main_menu(self):
+    def menu_1(self):
         btn = [
             Button(x = 50, y= WIN_HEIGHT//2 - 100, width= 300, height = 50, fg=WHITE,bg=BLACK , content='Tại hạ không có bằng hữu', fontsize=25),
             Button(x = 50, y= WIN_HEIGHT//2, width= 300, height = 50, fg=WHITE,bg=BLACK , content='Solo với bằng hữu', fontsize=25),
             Button(x = 50, y= WIN_HEIGHT//2 + 100, width= 300, height = 50, fg=WHITE,bg=BLACK , content='Cáo Từ', fontsize=25)
-        ]
+        ] 
+        while True:
+            self.graphic.screen.fill(BLACK)
+            self.graphic.screen.blit(self.background, (0,0),(0,0,980,650))
+            self.events()
+            
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_pressed = pygame.mouse.get_pressed()
+            if btn[0].is_pressed(mouse_pos, mouse_pressed):
+                self.isMainMenu = False
+                self.ischange = FPS
+                break
+                    
+            elif btn[1].is_pressed(mouse_pos, mouse_pressed):
+                self.mode = 'pvp'
+                    
+            elif btn[2].is_pressed(mouse_pos, mouse_pressed):
+                self.terminate_game()
+                        
+            for button in btn:    
+                self.graphic.screen.blit(button.image, button.rect)
+
+            self.graphic.clock.tick(FPS)  
+            pygame.display.update()
+            
+    def menu_2(self):
         btn2 = [
             Button(x = 50, y= WIN_HEIGHT//2 - 100, width= 200, height = 50, fg=WHITE,bg=BLACK , content='Nhường ta chút', fontsize=25),
             Button(x = 50, y= WIN_HEIGHT//2, width= 200, height = 50, fg=WHITE,bg=BLACK , content='Hết sức đi', fontsize=25),
             Button(x = 50, y= WIN_HEIGHT//2 + 100, width= 200, height = 50, fg=WHITE,bg=BLACK , content='Quay về', fontsize=25),
         ]
-        menu = True
         while True:
             self.graphic.screen.fill(BLACK)
             self.graphic.screen.blit(self.background, (0,0),(0,0,980,650))
             self.events()
-                
-            if menu:
-                mouse_pos = pygame.mouse.get_pos()
-                mouse_pressed = pygame.mouse.get_pressed()
-                if btn[0].is_pressed(mouse_pos, mouse_pressed):
-                    # self.graphic.message = False
-                    # self.mainMenu = False
-                    # self.mode = 'bot'
-                    menu = False
-                    # break
-                
-                elif btn[1].is_pressed(mouse_pos, mouse_pressed):
-                    self.mode = 'pvp'
-                
-                elif btn[2].is_pressed(mouse_pos, mouse_pressed):
-                    self.terminate_game()
-                    
-                for button in btn:    
-                    self.graphic.screen.blit(button.image, button.rect)
-            else :
-                mouse_pos = pygame.mouse.get_pos()
-                mouse_pressed = pygame.mouse.get_pressed()
+            
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_pressed = pygame.mouse.get_pressed()
+            if self.ischange == 0:    
                 if btn2[0].is_pressed(mouse_pos, mouse_pressed):
                     self.graphic.message = False
                     self.mainMenu = False
                     self.bot_mod =  self.bot_mod_default[0]
                     self.mode = 'bot'
+                    self.isMenuRunning = False
                     break
-                
+                        
                 elif btn2[1].is_pressed(mouse_pos, mouse_pressed):
                     self.graphic.message = False
                     self.mainMenu = False
                     self.bot_mod =  self.bot_mod_default[1]
                     self.mode = 'bot'
+                    self.isMenuRunning = False
                     break
-                
+                        
                 elif btn2[2].is_pressed(mouse_pos, mouse_pressed):
-                    menu = True
-                    
-                for button in btn2:    
-                    self.graphic.screen.blit(button.image, button.rect)
+                    self.isMainMenu =  True
+                    break
+            if self.ischange > 0:
+                self.ischange -= 1           
+            for button in btn2:    
+                self.graphic.screen.blit(button.image, button.rect)
+                
+            self.graphic.clock.tick(FPS)  
             pygame.display.update()
-            self.graphic.clock.tick(FPS)
+
+    def main_menu(self):
+        self.isMainMenu = True
+        self.isMenuRunning = True
+        self.ischange = 0
+        while self.isMenuRunning:
+            self.events()
+                
+            if self.isMainMenu:
+                self.menu_1()
+            else :
+                self.menu_2()
                  
     def main(self):
         while self.runing:
