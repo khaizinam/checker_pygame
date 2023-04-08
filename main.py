@@ -106,20 +106,23 @@ class Game:
             
             mouse_pos = pygame.mouse.get_pos()
             mouse_pressed = pygame.mouse.get_pressed()
-            if btn[0].is_pressed(mouse_pos, mouse_pressed):
-                self.isMainMenu = False
-                self.ischange = FPS
-                break
-                    
-            elif btn[1].is_pressed(mouse_pos, mouse_pressed):
-                self.mode = 'pvp'
-                    
-            elif btn[2].is_pressed(mouse_pos, mouse_pressed):
-                self.terminate_game()
+            if self.ischange == 0:
+                if btn[0].is_pressed(mouse_pos, mouse_pressed):
+                    self.isMainMenu = False
+                    self.ischange = 20
+                    break
                         
+                elif btn[1].is_pressed(mouse_pos, mouse_pressed):
+                    self.mode = 'pvp'
+                        
+                elif btn[2].is_pressed(mouse_pos, mouse_pressed):
+                    self.terminate_game()
+                            
+            if self.ischange > 0:
+                self.ischange -= 1
+                
             for button in btn:    
                 self.graphic.screen.blit(button.image, button.rect)
-
             self.graphic.clock.tick(FPS)  
             pygame.display.update()
             
@@ -155,9 +158,11 @@ class Game:
                         
                 elif btn2[2].is_pressed(mouse_pos, mouse_pressed):
                     self.isMainMenu =  True
+                    self.ischange = 20 
                     break
             if self.ischange > 0:
-                self.ischange -= 1           
+                self.ischange -= 1   
+                        
             for button in btn2:    
                 self.graphic.screen.blit(button.image, button.rect)
                 
