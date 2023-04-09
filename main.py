@@ -27,7 +27,7 @@ class Game:
         self.endit = False
         
         self.player = Player(loop_mode=True, game=self)
-        
+        self.player2 = Player(loop_mode=True, game=self)
         self.bot = Bot(self, RED, mid_eval='piece_and_board',end_eval='sum_of_dist', method=self.bot_mod, depth=3)
         
 
@@ -88,11 +88,13 @@ class Game:
                 if self.turn == BLUE:
                     self.player.player_turn()
                 else:
+                    # self.player2.player_turn()
                     count_nodes = self.bot.step(self.board, True)
                     # print('Total nodes explored in this step are', count_nodes)
                 self.update()
                 if self.endit:
-                    self.playing = False 
+                    self.playing = False               
+    
     def menu_1(self):
         btn = [
             Button(x = 50, y= WIN_HEIGHT//2 - 100, width= 300, height = 50, fg=WHITE,bg=BLACK , content='Tại hạ không có bằng hữu', fontsize=25),
