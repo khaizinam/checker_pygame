@@ -20,3 +20,5 @@ class SaveLoadSystem:
         dataFile = open(self.saveFolder + "/"+name + self.fileExtension, "rb")
         data = pickle.load(dataFile)
         return data
+    def checkFile(self, name):
+        return os.path.exists(self.saveFolder + "/"+name + self.fileExtension)

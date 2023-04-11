@@ -13,6 +13,7 @@ saveloadManager = SaveLoadSystem(".save", "Save")
 class Game:
     def __init__(self):
         self.player_turn = BLUE
+        self.op_ready = True
         self.endgame = False
         self.playerWin = ''
         self.runing = True
@@ -21,12 +22,15 @@ class Game:
         self.bot_mod =  self.bot_mod_default[1]
         self.graphic = Graphics(self)
         pygame.init()
-
+        self.loadgame = False
         self.background = pygame.image.load('resources/bg_menu_2.png')
     def setup(self):
         self.pve = True
         self.graphic = Graphics(self)
         self.board = Board()
+        if self.loadgame:
+            if not saveloadManager.loadFile("board") == None:
+                self.board.matrix = saveloadManager.loadFile("board")
         self.runing = True
         self.turn = BLUE
         self.hop = False
@@ -46,13 +50,12 @@ class Game:
         for event in pygame.event.get():
             if event.type == QUIT:
                 self.terminate_game()
-        keys = pygame.key.get_pressed()
-        if not self.isMainMenu:
-            if keys[pygame.K_SPACE]:
-                self.pauseMenu()
                 
     def update(self):
         self.events()
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_SPACE]:
+            self.pauseMenu()
         self.graphic.update_display(self.board, self.player.selected_legal_moves, self.player.selected_piece)
         
     
@@ -131,7 +134,14 @@ class Game:
                     self.terminate_game()
 
                 elif btn[3].is_pressed(mouse_pos, mouse_pressed):
-                    self.board.matrix = saveloadManager.loadFile("board")
+                    self.mainMenu = False
+                    self.pve = True
+                    self.isMenuRunning = False
+                    if saveloadManager.checkFile("board"):
+                        self.loadgame = True
+                    else: self.noSave()
+                    break
+
                             
             if self.ischange > 0:
                 self.ischange -= 1
@@ -216,13 +226,43 @@ class Game:
                 self.graphic.screen.blit(button.image, button.rect)
             self.graphic.clock.tick(FPS)
             pygame.display.update()
+    def noSave(self):
+        btnNoSave = [
+            Button(x=WIN_WIDTH // 2, y=WIN_HEIGHT // 2 - 100, width=200, height=50, fg=WHITE, bg=BLACK,
+                   content='Chưa từng so tài',
+                   fontsize=25),
+            Button(x=WIN_WIDTH // 2, y=WIN_HEIGHT // 2, width=200, height=50, fg=WHITE, bg=RED,
+                   content='Quay lại',
+                   fontsize=25),
+        ]
+        while True:
+            self.graphic.screen.fill(WHITE)
+            self.events()
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_pressed = pygame.mouse.get_pressed()
+            if self.ischange == 0:
+                if btnNoSave[0].is_pressed(mouse_pos, mouse_pressed):
+                    self.isMainMenu = True
+                    self.main_menu()
+                    self.ischange = 20
+                    break
+                elif btnNoSave[1].is_pressed(mouse_pos, mouse_pressed):
+                    self.isMainMenu = True
+                    self.main_menu()
+                    self.ischange = 20
+                    break
+            if self.ischange > 0:
+                self.ischange -= 1
+            for button in btnNoSave:
+                self.graphic.screen.blit(button.image, button.rect)
+            self.graphic.clock.tick(FPS)
+            pygame.display.update()
+
     def main_menu(self):
         self.isMainMenu = True
         self.isMenuRunning = True
         self.ischange = 0
         while self.isMenuRunning:
-            self.events()
-                
             if self.isMainMenu:
                 self.menu_1()
             else :
@@ -232,8 +272,7 @@ class Game:
         while self.runing:
             if self.mainMenu:
                 self.main_menu()
-            self.playing = True 
-            self.events() 
+            self.playing = True
             if self.pve:
                 self.play()
                 self.reset()
