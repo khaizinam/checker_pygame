@@ -8,8 +8,10 @@ from Board import *
 import pygame
 from time import sleep
 from SaveLoadManager import SaveLoadSystem
+from pygame import mixer
 
 saveloadManager = SaveLoadSystem(".save", "Save")
+pygame.mixer.init()
 class Game:
     def __init__(self):
         self.player_turn = BLUE
@@ -24,6 +26,8 @@ class Game:
         pygame.init()
         self.loadgame = False
         self.background = pygame.image.load('resources/bg_menu_2.png')
+        self.backgroundTheme = pygame.mixer.Sound('./Audio/background.mp3')
+
     def setup(self):
         self.pve = True
         self.graphic = Graphics(self)
@@ -270,6 +274,7 @@ class Game:
                 self.menu_2()
                  
     def main(self):
+        self.backgroundTheme.play()
         while self.runing:
             if self.mainMenu:
                 self.main_menu()

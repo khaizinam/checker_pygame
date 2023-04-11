@@ -39,9 +39,9 @@ Everest Witman - May 2014 - Marlboro College - Programming Workshop
 import pygame, sys
 from Tranfer import DataSend, Tranfer
 from config import *
-
+from pygame import mixer
 pygame.font.init()
-
+pygame.mixer.init()
 class Player:
 	"""
 	The main game control.
@@ -52,7 +52,7 @@ class Player:
 		self.selected_piece = None # a board location.
 		self.loop_mode = loop_mode
 		self.selected_legal_moves = []
-
+		self.checkerSound = pygame.mixer.Sound('./Audio/checkerSound.mp3')
 	def player_turn(self):
 		"""
 		The event loop. This is where events are triggered
@@ -74,9 +74,8 @@ class Player:
 					if self.game.hop == False:
 						if self.game.board.location(self.mouse_pos[0], self.mouse_pos[1]).occupant != None and self.game.board.location(self.mouse_pos[0], self.mouse_pos[1]).occupant.color == self.game.turn:
 							self.selected_piece = self.mouse_pos
-
 						elif self.selected_piece != None and self.mouse_pos in self.game.board.legal_moves(self.selected_piece[0], self.selected_piece[1]):
-
+							self.checkerSound.play()
 							self.game.board.move_piece(self.selected_piece[0], self.selected_piece[1], self.mouse_pos[0], self.mouse_pos[1])
 
 							if self.mouse_pos not in self.game.board.adjacent(self.selected_piece[0], self.selected_piece[1]):
@@ -88,6 +87,7 @@ class Player:
 								self.end_turn()
 
 					if self.game.hop == True:
+						self.checkerSound.play()
 						if self.selected_piece != None and self.mouse_pos in self.game.board.legal_moves(self.selected_piece[0], self.selected_piece[1], self.game.hop):
 							self.game.board.move_piece(self.selected_piece[0], self.selected_piece[1], self.mouse_pos[0], self.mouse_pos[1])
 							self.game.board.remove_piece(self.selected_piece[0] + (self.mouse_pos[0] - self.selected_piece[0]) // 2, self.selected_piece[1] + (self.mouse_pos[1] - self.selected_piece[1]) // 2)
