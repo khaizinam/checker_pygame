@@ -47,8 +47,9 @@ class Game:
             if event.type == QUIT:
                 self.terminate_game()
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_SPACE]:
-            self.pauseMenu()
+        if not self.isMainMenu:
+            if keys[pygame.K_SPACE]:
+                self.pauseMenu()
                 
     def update(self):
         self.events()
@@ -128,6 +129,9 @@ class Game:
                         
                 elif btn[2].is_pressed(mouse_pos, mouse_pressed):
                     self.terminate_game()
+
+                elif btn[3].is_pressed(mouse_pos, mouse_pressed):
+                    self.board.matrix = saveloadManager.loadFile("board")
                             
             if self.ischange > 0:
                 self.ischange -= 1

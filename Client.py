@@ -12,6 +12,7 @@ class Client:
         self.player_turn = BLUE
         self.playing = True
         self.endgame = False
+        self.op_ready = False
         self.playerWin = ''
         pygame.init()
         self.background = pygame.image.load('resources/bg_menu_2.png')
@@ -71,6 +72,10 @@ class Client:
             pygame.display.update()
             self.graphic.clock.tick(FPS)
     def inputdata(self, game):
+        if self.id == '0' and game.player_2_ready:
+            self.op_ready = True
+        if self.id == '1' and game.player_1_ready:
+            self.op_ready = True
         self.turn = game.turn
         self.board.matrix = game.matrix
         self.endgame = game.endgame
@@ -82,9 +87,9 @@ class Client:
             if self.player_turn == self.turn:
                 self.player.player_turn()
             else :
-                game = self.n.send(DataSend( self.id, 'get', '')._str())
-                self.inputdata(game)
-                    
+                pass
+            game = self.n.send(DataSend( self.id, 'get', '')._str())
+            self.inputdata(game)       
             self.update()
             if self.endgame:
                 self.reset()
