@@ -37,6 +37,7 @@ Everest Witman - May 2014 - Marlboro College - Programming Workshop
 """
 
 import pygame, sys
+from Tranfer import DataSend, Tranfer
 from config import *
 
 pygame.font.init()
@@ -61,7 +62,7 @@ class Player:
 		self.mouse_pos = tuple(map(int, self.game.graphic.board_coords(mouse_pos[0], mouse_pos[1]))) # what square is the mouse in?
 		if self.selected_piece != None:
 			self.selected_legal_moves = self.game.board.legal_moves(self.selected_piece[0], self.selected_piece[1], self.game.hop)
-			 #print("selected_legal_moves: ", self.selected_legal_moves)
+			#print("selected_legal_moves: ", self.selected_legal_moves)
 
 		for event in pygame.event.get():
 
@@ -69,8 +70,6 @@ class Player:
 				self.terminate_game()
 
 			if event.type == pygame.MOUSEBUTTONDOWN:
-				print(self.game.hop)
-				print(self.mouse_pos[0])
 				if self.mouse_pos[0] < 650 : 
 					if self.game.hop == False:
 						if self.game.board.location(self.mouse_pos[0], self.mouse_pos[1]).occupant != None and self.game.board.location(self.mouse_pos[0], self.mouse_pos[1]).occupant.color == self.game.turn:
@@ -99,12 +98,6 @@ class Player:
 						else:
 							self.selected_piece = self.mouse_pos
 
-
-	def update(self):
-		pass
-		"""Calls on the graphics class to update the game display."""
-		# self.game.graphic.update_display(self.game.board, self.selected_legal_moves, self.selected_piece)
-
 	def terminate_game(self):
 		"""Quits the program and ends the game."""
 		pygame.quit()
@@ -123,19 +116,24 @@ class Player:
 		self.selected_piece = None
 		self.selected_legal_moves = []
 		self.game.hop = False
-
+		# online
+		if self.loop_mode == False:
+			print('sended to server')
+			matrix_str = Tranfer().matrix_str(self.game.board.matrix)
+			print(matrix_str)
+			game = self.game.n.send(DataSend( self.game.id, 'put', matrix_str)._str())
+			self.game.inputdata(game)
+   
 		if self.check_for_endgame():
+			if self.loop_mode == False:
+				game = self.game.n.send(DataSend( self.game.id, 'end', '')._str())
+				self.game.inputdata(game)
 			if self.game.turn == BLUE:
-				print('RED WINS!')
 				self.game.graphic.draw_message("RED WINS!")
 			else:
-				print('BLUE WINS!')
 				self.game.graphic.draw_message("BLUE WINS!")
 			print(self.game.turn)
-			if(self.loop_mode):
-				self.game.endit = True
-			else:
-				self.terminate_game()
+			self.game.endit = True
 
 	def check_for_endgame(self):
 		"""
@@ -145,7 +143,6 @@ class Player:
 			for y in range(8):
 				if self.game.board.location(x, y).color == BLACK and self.game.board.location(x, y).occupant != None and self.game.board.location(x, y).occupant.color == self.game.turn:
 					if self.game.board.legal_moves(x, y) != []:
-						print(f'legal move of player :{self.game.board.legal_moves(x, y)}')
 						return False
 
 		return True

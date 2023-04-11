@@ -1,3 +1,4 @@
+from Client import *
 from Player import *
 from gamebot import *
 from Button import *
@@ -9,17 +10,20 @@ from time import sleep
 
 class Game:
     def __init__(self):
+        self.player_turn = BLUE
+        self.endgame = False
+        self.playerWin = ''
         self.runing = True
         self.mainMenu = True
         self.bot_mod_default = ['random','minmax','alpha_beta']
         self.bot_mod =  self.bot_mod_default[1]
-        self.graphic = Graphics()
-        self.graphic.setup_window()
+        self.graphic = Graphics(self)
         self.mode = ''
         pygame.init()
         self.background = pygame.image.load('resources/bg_menu_2.png')
     def setup(self):
-        self.graphic = Graphics()
+        self.pve = True
+        self.graphic = Graphics(self)
         self.board = Board()
         self.runing = True
         self.turn = BLUE
@@ -27,7 +31,6 @@ class Game:
         self.endit = False
         
         self.player = Player(loop_mode=True, game=self)
-        self.player2 = Player(loop_mode=True, game=self)
         self.bot = Bot(self, RED, mid_eval='piece_and_board',end_eval='sum_of_dist', method=self.bot_mod, depth=3)
         
 
@@ -44,7 +47,6 @@ class Game:
                 
     def update(self):
         self.events()
-        self.player.update()
         self.graphic.update_display(self.board, self.player.selected_legal_moves, self.player.selected_piece)
         
     
@@ -57,8 +59,8 @@ class Game:
             Button(x = WIN_WIDTH//2 - 100, y= WIN_HEIGHT//2 , width= 200, height = 50, fg=WHITE,bg=BLACK , content='Cáo từ', fontsize=25)
         ]
         while True:
-            self.graphic.screen.fill(BLACK)
-            self.graphic.screen.blit(self.background, (0,0),(0,0,980,650))
+            # self.graphic.screen.fill(BLACK)
+            # self.graphic.screen.blit(self.background, (0,0),(0,0,980,650))
             self.events()
                 
             mouse_pos = pygame.mouse.get_pos()
@@ -112,10 +114,14 @@ class Game:
                 if btn[0].is_pressed(mouse_pos, mouse_pressed):
                     self.isMainMenu = False
                     self.ischange = 20
+                    self.pve = True
                     break
                         
                 elif btn[1].is_pressed(mouse_pos, mouse_pressed):
                     self.mode = 'pvp'
+                    self.isMenuRunning = False
+                    self.pve = False
+                    break
                         
                 elif btn[2].is_pressed(mouse_pos, mouse_pressed):
                     self.terminate_game()
@@ -147,6 +153,7 @@ class Game:
                     self.mainMenu = False
                     self.bot_mod =  self.bot_mod_default[0]
                     self.mode = 'bot'
+                    self.pve = True
                     self.isMenuRunning = False
                     break
                         
@@ -155,6 +162,7 @@ class Game:
                     self.mainMenu = False
                     self.bot_mod =  self.bot_mod_default[1]
                     self.mode = 'bot'
+                    self.pve = True
                     self.isMenuRunning = False
                     break
                         
@@ -189,9 +197,13 @@ class Game:
                 self.main_menu()
             self.playing = True 
             self.events() 
-            self.play()
+            if self.pve:
+                self.play()
+                self.reset()
+            else:
+                c = Client()
+                c.main()
             #lose/ win screen
-            self.reset()
 
 game = Game()
 game.main()    
