@@ -53,6 +53,8 @@ class Player:
 		self.loop_mode = loop_mode
 		self.selected_legal_moves = []
 		self.checkerSound = pygame.mixer.Sound('./Audio/checkerSound.mp3')
+		self.loseSound = pygame.mixer.Sound('./Audio/loseSound.mp3')
+		self.winSound = pygame.mixer.Sound('./Audio/winSound.mp3')
 	def player_turn(self):
 		"""
 		The event loop. This is where events are triggered
@@ -130,8 +132,10 @@ class Player:
 				self.game.inputdata(game)
 			if self.game.turn == BLUE:
 				self.game.graphic.draw_message("RED WINS!")
+				self.loseSound.play()
 			else:
 				self.game.graphic.draw_message("BLUE WINS!")
+				self.winSound.play()
 			print(self.game.turn)
 			self.game.endit = True
 
