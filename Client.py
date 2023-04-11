@@ -10,16 +10,20 @@ from time import sleep
 class Client:
     def __init__(self):
         self.player_turn = BLUE
+        self.playing = True
         self.endgame = False
         self.playerWin = ''
         pygame.init()
         self.background = pygame.image.load('resources/bg_menu_2.png')
         self.n = Network()
         self.id = self.n.getP()
+        
+        if self.id == None:
+            self.playing = None
         print(f'start with id: {self.id}')
         if self.id == '1':
             self.player_turn = RED
-        self.playing = True
+        
         
         
     def setup(self):
