@@ -38,14 +38,14 @@ class Graphics:
 		font_obj = pygame.font.Font('arial.ttf', 35)
 		text1 = font_obj.render(f'Bạn là quân {self.player_turn}', True, BLACK)
 		tex1_rect = text1.get_rect()
-		tex1_rect.center = (WIN_WIDTH - 150, WIN_HEIGHT // 2 - 100)
+		tex1_rect.center = (WIN_WIDTH - 150, WIN_HEIGHT // 2 + 100)
 		#turn
 		text = 'Lượt đối thủ...'
 		if self.game.turn == self.game.player_turn:
 			text = 'Lượt của bạn'
 		text2 = font_obj.render(text, True, BLACK)
 		tex2_rect = text2.get_rect()
-		tex2_rect.center = (WIN_WIDTH - 150, WIN_HEIGHT // 2)
+		tex2_rect.center = (WIN_WIDTH - 150, WIN_HEIGHT // 2 + 200)
 		# print
 		self.screen.blit(text1, tex1_rect)
 		self.screen.blit(text2, tex2_rect)
@@ -107,7 +107,7 @@ class Graphics:
 		"""
 		print("in here")
 		self.message = True
-		self.font_obj = pygame.font.Font('freesansbold.ttf', 44)
-		self.text_surface_obj = self.font_obj.render(message, True, HIGH, BLACK)
+		self.font_obj = pygame.font.Font('arial.ttf', 44)
+		self.text_surface_obj = self.font_obj.render(message, True, BLACK)
 		self.text_rect_obj = self.text_surface_obj.get_rect()
-		self.text_rect_obj.center = (WIN_WIDTH // 2, WIN_HEIGHT // 2)
+		self.text_rect_obj.center = (WIN_WIDTH - 150, WIN_HEIGHT // 2 - 50)
