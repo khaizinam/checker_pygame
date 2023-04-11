@@ -40,9 +40,14 @@ class Graphics:
 		tex1_rect = text1.get_rect()
 		tex1_rect.center = (WIN_WIDTH - 150, WIN_HEIGHT // 2 + 100)
 		#turn
-		text = 'Lượt đối thủ...'
-		if self.game.turn == self.game.player_turn:
-			text = 'Lượt của bạn'
+		text = 'Đang chờ..'
+		if self.game.op_ready: 
+			if self.game.turn == self.game.player_turn:
+				text = 'Lượt của bạn'
+			else :
+				text = 'Lượt đối phương...'
+		else :
+			text = 'Đang chờ..'
 		text2 = font_obj.render(text, True, BLACK)
 		tex2_rect = text2.get_rect()
 		tex2_rect.center = (WIN_WIDTH - 150, WIN_HEIGHT // 2 + 200)
