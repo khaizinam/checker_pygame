@@ -7,7 +7,9 @@ from Graphic import *
 from Board import *
 import pygame
 from time import sleep
+from SaveLoadManager import SaveLoadSystem
 
+saveloadManager = SaveLoadSystem(".save", "Save")
 class Game:
     def __init__(self):
         self.player_turn = BLUE
@@ -19,6 +21,7 @@ class Game:
         self.bot_mod =  self.bot_mod_default[1]
         self.graphic = Graphics(self)
         pygame.init()
+
         self.background = pygame.image.load('resources/bg_menu_2.png')
     def setup(self):
         self.pve = True
@@ -42,7 +45,10 @@ class Game:
     def events(self):
         for event in pygame.event.get():
             if event.type == QUIT:
-                self.terminate_game() 
+                self.terminate_game()
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_SPACE]:
+            self.pauseMenu()
                 
     def update(self):
         self.events()
@@ -98,7 +104,8 @@ class Game:
         btn = [
             Button(x = 50, y= WIN_HEIGHT//2 - 100, width= 300, height = 50, fg=WHITE,bg=BLACK , content='Tại hạ không có bằng hữu', fontsize=25),
             Button(x = 50, y= WIN_HEIGHT//2, width= 300, height = 50, fg=WHITE,bg=BLACK , content='Solo với bằng hữu', fontsize=25),
-            Button(x = 50, y= WIN_HEIGHT//2 + 100, width= 300, height = 50, fg=WHITE,bg=BLACK , content='Cáo Từ', fontsize=25)
+            Button(x = 50, y= WIN_HEIGHT//2 + 100, width= 300, height = 50, fg=WHITE,bg=RED , content='Cáo Từ', fontsize=25),
+            Button(x=50, y=WIN_HEIGHT // 2 + 200, width=300, height=50, fg=WHITE, bg=BLUE, content='Trận dở dang', fontsize=25)
         ] 
         while True:
             self.graphic.screen.fill(BLACK)
@@ -172,7 +179,39 @@ class Game:
                 
             self.graphic.clock.tick(FPS)  
             pygame.display.update()
-
+    def pauseMenu(self):
+        pause = True
+        btnPauseMenu = [
+            Button(x=WIN_WIDTH // 2, y=WIN_HEIGHT // 2 - 100, width=200, height=50, fg=WHITE, bg=BLACK, content='Quan kỳ bất ngữ',
+                   fontsize=25),
+            Button(x=WIN_WIDTH // 2, y=WIN_HEIGHT // 2 , width=200, height=50, fg=WHITE, bg=BLACK, content='Hạ thủ vô hồi',
+                   fontsize=25),
+            Button(x=WIN_WIDTH // 2, y=WIN_HEIGHT // 2 + 100, width=200, height=50, fg=WHITE, bg=BLACK, content='Quay về',
+                   fontsize=25),
+        ]
+        while pause:
+            self.graphic.screen.fill(WHITE)
+            self.events()
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_pressed = pygame.mouse.get_pressed()
+            if self.ischange == 0:
+                if btnPauseMenu[0].is_pressed(mouse_pos, mouse_pressed):
+                    saveloadManager.saveData(self.board.matrix,"board")
+                    break
+                elif btnPauseMenu[1].is_pressed(mouse_pos, mouse_pressed):
+                    self.board.matrix = saveloadManager.loadFile("board")
+                    break
+                elif btnPauseMenu[2].is_pressed(mouse_pos, mouse_pressed):
+                    self.isMainMenu = True
+                    self.main_menu()
+                    self.ischange = 20
+                    break
+            if self.ischange > 0:
+                self.ischange -= 1
+            for button in btnPauseMenu:
+                self.graphic.screen.blit(button.image, button.rect)
+            self.graphic.clock.tick(FPS)
+            pygame.display.update()
     def main_menu(self):
         self.isMainMenu = True
         self.isMenuRunning = True
