@@ -18,7 +18,6 @@ class Game:
         self.bot_mod_default = ['random','minmax','alpha_beta']
         self.bot_mod =  self.bot_mod_default[1]
         self.graphic = Graphics(self)
-        self.mode = ''
         pygame.init()
         self.background = pygame.image.load('resources/bg_menu_2.png')
     def setup(self):
@@ -86,16 +85,14 @@ class Game:
     def play(self):
         self.setup()
         while self.playing:  # main game loop
-            if self.mode == 'bot':
-                if self.turn == BLUE:
-                    self.player.player_turn()
-                else:
-                    # self.player2.player_turn()
-                    count_nodes = self.bot.step(self.board, True)
-                    # print('Total nodes explored in this step are', count_nodes)
-                self.update()
-                if self.endit:
-                    self.playing = False               
+            if self.turn == BLUE:
+                self.player.player_turn()
+            else:
+                count_nodes = self.bot.step(self.board, True)
+                # print('Total nodes explored in this step are', count_nodes)
+            self.update()
+            if self.endit:
+                self.playing = False               
     
     def menu_1(self):
         btn = [
@@ -118,7 +115,6 @@ class Game:
                     break
                         
                 elif btn[1].is_pressed(mouse_pos, mouse_pressed):
-                    self.mode = 'pvp'
                     self.isMenuRunning = False
                     self.pve = False
                     break
@@ -152,7 +148,6 @@ class Game:
                     self.graphic.message = False
                     self.mainMenu = False
                     self.bot_mod =  self.bot_mod_default[0]
-                    self.mode = 'bot'
                     self.pve = True
                     self.isMenuRunning = False
                     break
@@ -161,7 +156,6 @@ class Game:
                     self.graphic.message = False
                     self.mainMenu = False
                     self.bot_mod =  self.bot_mod_default[1]
-                    self.mode = 'bot'
                     self.pve = True
                     self.isMenuRunning = False
                     break
