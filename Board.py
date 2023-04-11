@@ -168,7 +168,6 @@ class Board:
 				if self.on_board(move[0], move[1]) and self.location(move[0], move[1]).occupant != None:
 					if self.location(move[0], move[1]).occupant.color != self.location(x, y).occupant.color and self.on_board(move[0] + (move[0] - x), move[1] + (move[1] - y)) and self.location(move[0] + (move[0] - x), move[1] + (move[1] - y)).occupant == None: # is this location filled by an enemy piece?
 						legal_moves.append((move[0] + (move[0] - x), move[1] + (move[1] - y)))
-
 		return legal_moves
 
 	def remove_piece(self, x, y):
