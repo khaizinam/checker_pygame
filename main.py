@@ -53,9 +53,10 @@ class Game:
                 
     def update(self):
         self.events()
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_SPACE]:
-            self.pauseMenu()
+        if self.pve:
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_SPACE]:
+                self.pauseMenu()
         self.graphic.update_display(self.board, self.player.selected_legal_moves, self.player.selected_piece)
         
     
