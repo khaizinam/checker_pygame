@@ -27,7 +27,7 @@ class Game:
         pygame.init()
         self.loadgame = False
         self.background = pygame.image.load('resources/bg_menu_2.png')
-        self.backgroundTheme = pygame.mixer.Sound('./Audio/background.mp3')
+        # self.backgroundTheme = pygame.mixer.Sound('./Audio/background.mp3')
 
     def setup(self):
         self.pve = True
@@ -114,8 +114,8 @@ class Game:
         btn = [
             Button(x = 50, y= WIN_HEIGHT//2 - 100, width= 300, height = 50, fg=WHITE,bg=BLACK , content='Tại hạ không có bằng hữu', fontsize=25),
             Button(x = 50, y= WIN_HEIGHT//2, width= 300, height = 50, fg=WHITE,bg=BLACK , content='Solo với bằng hữu', fontsize=25),
-            Button(x = 50, y= WIN_HEIGHT//2 + 100, width= 300, height = 50, fg=WHITE,bg=RED , content='Cáo Từ', fontsize=25),
-            Button(x=50, y=WIN_HEIGHT // 2 + 200, width=300, height=50, fg=WHITE, bg=BLUE, content='Trận dở dang', fontsize=25)
+            Button(x = 50, y= WIN_HEIGHT//2 + 100, width= 300, height = 50, fg=WHITE,bg=BLACK , content='Cáo Từ', fontsize=25),
+            Button(x=50, y=WIN_HEIGHT // 2 + 200, width=300, height=50, fg=WHITE, bg=BLACK, content='Trận dở dang', fontsize=25)
         ] 
         while True:
             self.graphic.screen.fill(BLACK)
@@ -202,9 +202,9 @@ class Game:
     def pauseMenu(self):
         pause = True
         btnPauseMenu = [
-            Button(x=WIN_WIDTH // 2, y=WIN_HEIGHT // 2 - 100, width=200, height=50, fg=WHITE, bg=BLACK, content='Quan kỳ bất ngữ',
+            Button(x=WIN_WIDTH // 2, y=WIN_HEIGHT // 2 - 100, width=200, height=50, fg=WHITE, bg=BLACK, content='Lưu lại',
                    fontsize=25),
-            Button(x=WIN_WIDTH // 2, y=WIN_HEIGHT // 2 , width=200, height=50, fg=WHITE, bg=BLACK, content='Hạ thủ vô hồi',
+            Button(x=WIN_WIDTH // 2, y=WIN_HEIGHT // 2 , width=200, height=50, fg=WHITE, bg=BLACK, content='Tải lại',
                    fontsize=25),
             Button(x=WIN_WIDTH // 2, y=WIN_HEIGHT // 2 + 100, width=200, height=50, fg=WHITE, bg=BLACK, content='Quay về',
                    fontsize=25),
@@ -275,7 +275,7 @@ class Game:
                 self.menu_2()
                  
     def main(self):
-        self.backgroundTheme.play()
+        # self.backgroundTheme.play()
         while self.runing:
             if self.mainMenu:
                 self.main_menu()

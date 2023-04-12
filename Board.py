@@ -119,6 +119,10 @@ class Board:
 		"""
 		x = int(x)
 		y = int(y)
+		if x > 7 : x = 7
+		if x < 0 : x = 0
+		if y > 7 : y = 7
+		if y < 0 : y = 0
 		return self.matrix[x][y]
 
 	def blind_legal_moves(self, x, y):
