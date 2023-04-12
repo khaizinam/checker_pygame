@@ -14,6 +14,7 @@ saveloadManager = SaveLoadSystem(".save", "Save")
 pygame.mixer.init()
 class Game:
     def __init__(self):
+        self.op_ready = True
         self.player_turn = BLUE
         self.op_ready = True
         self.endgame = False
